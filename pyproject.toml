@@ -15,6 +15,23 @@ dependencies = [
 [project.scripts]
 nullpud = "nullpud:main"
 
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short -q"
+
+[tool.coverage.run]
+source = ["src/nullpud"]
+omit = ["src/nullpud/run_loop.py"]  # interactive loop; tested manually
+
+[tool.coverage.report]
+show_missing = true
+
 [build-system]
 requires = ["uv_build>=0.12.15,<0.13.0"]
 build-backend = "uv_build"

@@ -49,3 +49,36 @@ following docs need updating and apply the changes in the same response.
 
 8. **If nothing in the docs is affected, say so explicitly** in the response
    so the user knows the check was done.
+
+## Test sync rules
+
+Tests live in `tests/test_<module>.py` and must stay in sync with the code
+they cover. Apply these checks after every source change.
+
+| Changed file(s) | Check these tests |
+|---|---|
+| `src/nullpud/item.py` | `tests/test_item.py` |
+| `src/nullpud/player.py` | `tests/test_player.py` |
+| `src/nullpud/puzzle.py` | `tests/test_puzzle.py` |
+| `src/nullpud/combatant.py` | `tests/test_combatant.py` |
+| `src/nullpud/room.py` | `tests/test_room.py` |
+| `src/nullpud/dungeon.py` | `tests/test_dungeon.py` |
+| `src/nullpud/run_loop.py` | No unit tests (interactive loop); no update needed |
+| `data/dungeons/*.json` | `tests/test_dungeon.py` if new rooms, puzzles, or monsters are referenced |
+
+9. **Tests ship with the change.** If a code change adds a new method,
+   changes a return value, renames a field, or removes behaviour, update or
+   add the relevant tests in the same response.
+
+10. **New public methods get at least one test.** A method with a non-trivial
+    return value or side effect needs a test for the happy path and at least
+    one failure/edge case.
+
+11. **New modules get a test file.** A new `src/nullpud/<module>.py` needs a
+    corresponding `tests/test_<module>.py` created in the same response.
+
+12. **Run the suite after every change.** After any source or test edit, run
+    `uv run pytest` and fix all failures before considering the task done.
+
+13. **If no tests are affected, say so explicitly** in the response so the
+    user knows the check was done.
