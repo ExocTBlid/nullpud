@@ -1,0 +1,7 @@
+{
+  "id": "health_potion",
+  "name": "Health Potion",
+  "desc": "A vial of red liquid. Restores 10 HP.",
+  "type": "consumable",
+  "effect": { "heal": 10 }
+}

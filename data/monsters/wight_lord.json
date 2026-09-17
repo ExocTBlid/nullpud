@@ -1,0 +1,18 @@
+{
+  "id": "wight_lord",
+  "name": "Wight Lord",
+  "desc": "A towering figure in black plate. Its eyes are cold fire.",
+  "base_hp": 60,
+  "base_attack": 9,
+  "base_defense": 4,
+  "xp": 200,
+  "loot": [
+    { "item": "wight_crown", "chance": 1.0 },
+    { "item": "health_potion", "chance": 0.5 }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The Wight Lord tears off its helmet. 'You cannot kill what has already died!'",
+    "attack_bonus": 3
+  }
+}

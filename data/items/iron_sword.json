@@ -1,0 +1,7 @@
+{
+  "id": "iron_sword",
+  "name": "Iron Sword",
+  "desc": "A straight blade, nothing fancy. Adds 3 attack.",
+  "type": "weapon",
+  "stat_bonus": { "attack": 3 }
+}

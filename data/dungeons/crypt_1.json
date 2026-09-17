@@ -1,0 +1,68 @@
+{
+  "id": "crypt_1",
+  "name": "The Weeping Crypt",
+  "base_level": 1,
+  "entry_room": "entrance",
+  "boss_room": "boss_chamber",
+  "rooms": {
+    "entrance": {
+      "name": "Crypt Entrance",
+      "desc": "Damp stone walls close in around you. A rusted gate to the north is chained shut.",
+      "exits": { "north": "hall" },
+      "items": ["rusty_key"],
+      "monster": null,
+      "puzzle": "gate_lock"
+    },
+    "hall": {
+      "name": "Dark Hall",
+      "desc": "A long corridor. Torches sputter in iron sconces. Passages lead east and north.",
+      "exits": { "south": "entrance", "east": "puzzle_room", "north": "treasure_room" },
+      "items": [],
+      "monster": "skeleton",
+      "puzzle": null
+    },
+    "puzzle_room": {
+      "name": "The Whispering Alcove",
+      "desc": "A carved stone face stares from the far wall. The passage north is sealed.",
+      "exits": { "west": "hall", "north": "treasure_room" },
+      "items": [],
+      "monster": null,
+      "puzzle": "crypt_riddle"
+    },
+    "treasure_room": {
+      "name": "Ossuary",
+      "desc": "Shelves of skulls line the walls. A battered chest sits in the centre.",
+      "exits": { "south": "hall", "north": "boss_chamber" },
+      "items": ["iron_sword", "health_potion"],
+      "monster": null,
+      "puzzle": null
+    },
+    "boss_chamber": {
+      "name": "The Throne of Dust",
+      "desc": "A vaulted chamber draped in cobwebs. On a throne of bones sits the Wight Lord.",
+      "exits": { "south": "treasure_room" },
+      "items": [],
+      "monster": "wight_lord",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "gate_lock": {
+      "type": "lock",
+      "desc": "The gate is secured with a heavy padlock.",
+      "key_item": "rusty_key",
+      "blocks_exit": "north",
+      "success_msg": "The lock clicks open. The gate swings wide.",
+      "fail_msg": "You don't have anything to open this with."
+    },
+    "crypt_riddle": {
+      "type": "riddle",
+      "desc": "A carved face on the wall speaks: 'I have cities but no houses. Mountains but no trees. What am I?'",
+      "answer": "a map",
+      "blocks_exit": "north",
+      "success_msg": "The carved face smiles. A hidden door grinds open to the north.",
+      "fail_msg": "The face is silent. Nothing happens.",
+      "hint": "Think about what shows places without being a place itself."
+    }
+  }
+}

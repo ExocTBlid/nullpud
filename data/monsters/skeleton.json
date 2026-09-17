@@ -1,0 +1,13 @@
+{
+  "id": "skeleton",
+  "name": "Skeleton",
+  "desc": "Bleached bones clatter as it lurches toward you.",
+  "base_hp": 12,
+  "base_attack": 4,
+  "base_defense": 1,
+  "xp": 30,
+  "loot": [
+    { "item": "bone_shard", "chance": 0.8 },
+    { "item": "health_potion", "chance": 0.3 }
+  ]
+}
