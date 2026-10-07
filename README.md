@@ -80,6 +80,16 @@ Open a pull request against `main`.
 3. Add content as data. Create `data/dungeons/<id>.json`, add any new files under `data/items/` and `data/monsters/`, and append the dungeon id to `DUNGEON_ORDER` in `src/nullpud/dungeon.py`. The schema is in [docs/dungeon-format.md](docs/dungeon-format.md). A standard dungeon does not require a change to the command loop.
 4. A new puzzle kind (anything other than a lock, riddle, lever, or item combination) needs a handler in `puzzle.py` and tests in `tests/`.
 
+Pull requests and pushes to `main` run `uv run pytest` in GitHub Actions. After those tests pass on `main`, [python-semantic-release](https://python-semantic-release.readthedocs.io/) versions the project from [Conventional Commits](https://www.conventionalcommits.org/). It writes the new version into `pyproject.toml`, refreshes `uv.lock`, updates `CHANGELOG.md`, and publishes a GitHub release tagged `vX.Y.Z`. The first green run on `main` tags the version already in `pyproject.toml` when the repository has no release tag. Later releases are calculated from that tag.
+
+| Commit | Version bump while on `0.x` |
+| --- | --- |
+| `fix:` | Patch (`0.1.0` to `0.1.1`) |
+| `feat:` | Minor (`0.1.0` to `0.2.0`) |
+| `feat!:` or a `BREAKING CHANGE:` footer | Minor, same as `feat:` |
+
+`major_on_zero` is false in `pyproject.toml`, so a breaking change stays on `0.x`. Set it to true when a breaking change should become `1.0.0`. A commit changes the version when its message uses one of those forms.
+
 ## Project layout
 
 ```text
