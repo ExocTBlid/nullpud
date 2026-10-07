@@ -1,6 +1,6 @@
 # nullPud
 
-A single-player terminal dungeon crawler. Type commands to explore hand-crafted rooms, solve puzzles, fight monsters, beat a boss, and carry your character into the next dungeon.
+This is a single-player terminal dungeon crawler. In the spirit of a traditional MUD, I wanted to make a Personal User Dungeon to explore solo. I chose Python with the adventurelib module to create a powerful and simple interface for a text game where you type commands to explore hand-crafted rooms, solve puzzles, fight monsters, beat a boss, and carry your character into the next dungeon.
 
 ## Motivation
 
