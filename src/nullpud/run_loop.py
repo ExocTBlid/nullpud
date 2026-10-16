@@ -556,9 +556,15 @@ def _end_combat(victory: bool) -> None:
 
     else:
         console.print(f"\n[bold red]You have fallen...[/bold red]")
-        console.print(f"[dim]{_player.name} collapses in the darkness. Game over.[/dim]")
-        _player.save()
-        sys.exit(0)
+        console.print(
+            "[dim]You wake at a table in the Wayward Lantern. "
+            "The barkeep has put you back together.[/dim]"
+        )
+        _player.current_hp = _player.max_hp
+        path = _player.save()
+        console.print(f"[dim]Progress saved to {path}.[/dim]")
+        _enter_hub()
+        return
 
     adventurelib.set_context(None)
     _enemy = None

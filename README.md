@@ -34,7 +34,7 @@ A session runs in three contexts. The tavern is where you start and where you re
 5. Fights are turn-based. You act, then the monster does. Defeat the boss to earn XP and loot. The game writes your save and brings you back to the tavern.
 6. `return` leaves the current dungeon and climbs back to the tavern. Rooms you left behind reset. `quit` saves and exits. The next launch returns you to the tavern.
 
-Dying in a fight ends the run after writing the save.
+Dying in a fight writes the save, restores your health, and returns you to the tavern. The dungeon you fell in resets. Items and experience you already earned stay with you.
 
 ### Commands
 
