@@ -1,0 +1,79 @@
+{
+  "id": "spire_9",
+  "name": "The Ash Spire",
+  "base_level": 9,
+  "entry_room": "foot",
+  "boss_room": "peak",
+  "rooms": {
+    "foot": {
+      "name": "Spire Foot",
+      "desc": "Ash falls like snow. An iron door to the north is locked. A key glows in the drift.",
+      "exits": {
+        "north": "landing"
+      },
+      "items": [
+        "spire_key"
+      ],
+      "monster": null,
+      "puzzle": "spire_door"
+    },
+    "landing": {
+      "name": "Ash Landing",
+      "desc": "The stair turns. A door east leads into an armory. The flight goes on north.",
+      "exits": {
+        "south": "foot",
+        "east": "armory",
+        "north": "stairwell"
+      },
+      "items": [],
+      "monster": "ash_wraith",
+      "puzzle": null
+    },
+    "armory": {
+      "name": "Armory",
+      "desc": "Racks of burned spears. One thick red vial survived.",
+      "exits": {
+        "west": "landing"
+      },
+      "items": [
+        "greater_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "stairwell": {
+      "name": "Last Stair",
+      "desc": "The last flight. A narrow sword leans where a sentry used to stand.",
+      "exits": {
+        "south": "landing",
+        "north": "peak"
+      },
+      "items": [
+        "nightblade",
+        "greater_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "peak": {
+      "name": "The Peak",
+      "desc": "Wind and cinders. A lord sits on a throne of chimney brick.",
+      "exits": {
+        "south": "stairwell"
+      },
+      "items": [],
+      "monster": "spire_lord",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "spire_door": {
+      "type": "lock",
+      "desc": "The iron door is locked and warm.",
+      "key_item": "spire_key",
+      "blocks_exit": "north",
+      "success_msg": "The lock turns. Heat spills down the stair.",
+      "fail_msg": "The lock will not take what you offered."
+    }
+  }
+}

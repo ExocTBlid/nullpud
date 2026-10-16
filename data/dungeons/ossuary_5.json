@@ -1,0 +1,86 @@
+{
+  "id": "ossuary_5",
+  "name": "The Silent Ossuary",
+  "base_level": 5,
+  "entry_room": "threshold",
+  "boss_room": "cell",
+  "rooms": {
+    "threshold": {
+      "name": "Bone Threshold",
+      "desc": "The door north is locked. A bone key lies in a bowl of teeth.",
+      "exits": {
+        "north": "nave"
+      },
+      "items": [
+        "ossuary_key"
+      ],
+      "monster": null,
+      "puzzle": "bone_gate"
+    },
+    "nave": {
+      "name": "The Nave",
+      "desc": "Pews of femurs face an empty altar. A door stands to the east.",
+      "exits": {
+        "south": "threshold",
+        "east": "scriptorium"
+      },
+      "items": [],
+      "monster": "bone_acolyte",
+      "puzzle": null
+    },
+    "scriptorium": {
+      "name": "Scriptorium",
+      "desc": "Ash and unwritten books. A sealed stair climbs north.",
+      "exits": {
+        "west": "nave",
+        "north": "reliquary"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "ash_riddle"
+    },
+    "reliquary": {
+      "name": "Reliquary",
+      "desc": "A steel sword and a red vial rest on a cloth of gold thread.",
+      "exits": {
+        "south": "scriptorium",
+        "north": "cell"
+      },
+      "items": [
+        "steel_sword",
+        "health_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "cell": {
+      "name": "Saint's Cell",
+      "desc": "The cell is circular. The saint in it is not at prayer.",
+      "exits": {
+        "south": "reliquary"
+      },
+      "items": [],
+      "monster": "ossuary_saint",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "bone_gate": {
+      "type": "lock",
+      "desc": "The gate is locked with a clasp shaped like a jaw.",
+      "key_item": "ossuary_key",
+      "blocks_exit": "north",
+      "success_msg": "The jaw clasp opens. The gate swings in.",
+      "fail_msg": "Nothing you hold fits the jaw."
+    },
+    "ash_riddle": {
+      "type": "riddle",
+      "desc": "Words burned into the lintel: 'I eat and I am fed, yet I die when I drink. What am I?'",
+      "answer": "fire",
+      "blocks_exit": "north",
+      "success_msg": "The ash flares. The stair north is clear.",
+      "fail_msg": "The letters stay dark.",
+      "hint": "One word. Water is the end of it."
+    }
+  }
+}

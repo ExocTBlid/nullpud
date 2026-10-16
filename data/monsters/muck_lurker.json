@@ -1,0 +1,15 @@
+{
+  "id": "muck_lurker",
+  "name": "Muck Lurker",
+  "desc": "Something with too many elbows rises from the slurry.",
+  "base_hp": 24,
+  "base_attack": 7,
+  "base_defense": 2,
+  "xp": 60,
+  "loot": [
+    {
+      "item": "health_potion",
+      "chance": 0.5
+    }
+  ]
+}

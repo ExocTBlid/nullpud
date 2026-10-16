@@ -3,8 +3,16 @@
 import json
 import pytest
 
-from nullpud.dungeon import Dungeon, next_dungeon
-from nullpud.puzzle import LockPuzzle, RiddlePuzzle
+from nullpud.dungeon import (
+    DUNGEON_ORDER,
+    Dungeon,
+    dungeon_choices,
+    dungeon_info,
+    next_dungeon,
+    record_completion,
+)
+from nullpud.item import load_all_items
+from nullpud.puzzle import CombinationPuzzle, LeverPuzzle, LockPuzzle, RiddlePuzzle
 
 
 # ---------------------------------------------------------------------------
@@ -172,8 +180,110 @@ class TestSpawnMonster:
 # ---------------------------------------------------------------------------
 
 class TestNextDungeon:
+    def test_crypt_leads_to_cellar(self):
+        assert next_dungeon("crypt_1") == "cellar_2"
+
     def test_none_for_last_dungeon(self):
-        assert next_dungeon("crypt_1") is None
+        assert next_dungeon(DUNGEON_ORDER[-1]) is None
 
     def test_none_for_unknown_dungeon(self):
         assert next_dungeon("nonexistent") is None
+
+
+# ---------------------------------------------------------------------------
+# Tavern progress: next level, previous dungeons
+# ---------------------------------------------------------------------------
+
+class TestDungeonChoices:
+    def test_campaign_is_ten_levels(self):
+        assert DUNGEON_ORDER == [
+            "crypt_1",
+            "cellar_2",
+            "barrow_3",
+            "sewer_4",
+            "ossuary_5",
+            "mine_6",
+            "chapel_7",
+            "vault_8",
+            "spire_9",
+            "throne_10",
+        ]
+
+    def test_fresh_character_gets_only_the_first(self):
+        choice = dungeon_choices(None)
+        assert choice.previous == ()
+        assert choice.next_id == "crypt_1"
+        assert choice.allowed() == ("crypt_1",)
+
+    def test_unknown_clear_does_not_unlock_the_campaign(self):
+        choice = dungeon_choices("missing")
+        assert choice.allowed() == ("crypt_1",)
+
+    def test_cleared_dungeons_stay_open_with_the_next(self):
+        choice = dungeon_choices("cellar_2")
+        assert choice.previous == ("crypt_1", "cellar_2")
+        assert choice.next_id == "barrow_3"
+        assert choice.allowed() == ("crypt_1", "cellar_2", "barrow_3")
+
+    def test_final_clear_has_no_next_level(self):
+        choice = dungeon_choices("throne_10")
+        assert choice.next_id is None
+        assert choice.previous == tuple(DUNGEON_ORDER)
+        assert "crypt_1" in choice.allowed()
+
+    def test_replay_does_not_rewind_progress(self):
+        assert record_completion("ossuary_5", "cellar_2") == "ossuary_5"
+        assert record_completion("crypt_1", "cellar_2") == "cellar_2"
+        assert record_completion(None, "crypt_1") == "crypt_1"
+
+    def test_crypt_title(self):
+        name, level = dungeon_info("crypt_1")
+        assert name == "The Weeping Crypt"
+        assert level == 1
+
+
+# ---------------------------------------------------------------------------
+# Every shipped dungeon loads and can be solved from its own rooms
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("dungeon_id", DUNGEON_ORDER)
+def test_campaign_dungeon(dungeon_id):
+    dungeon = Dungeon.load(dungeon_id)
+    assert dungeon.id == dungeon_id
+    assert dungeon.base_level == DUNGEON_ORDER.index(dungeon_id) + 1
+    assert dungeon.entry_room_id in dungeon.rooms
+    assert dungeon.boss_room_id in dungeon.rooms
+    assert dungeon.boss_room.monster_id
+
+    items = load_all_items()
+    room_items = {iid for room in dungeon.rooms.values() for iid in room.items}
+
+    for room in dungeon.rooms.values():
+        for dest in room.exits.values():
+            assert dest in dungeon.rooms, f"{dungeon_id}: exit {dest!r} missing"
+        if room.monster_id:
+            assert room.monster_id in dungeon._monster_data
+        if room.puzzle_id:
+            assert room.puzzle_id in dungeon.puzzles
+            puzzle = dungeon.puzzles[room.puzzle_id]
+            assert puzzle.blocks_exit in room.exits
+
+    for puzzle in dungeon.puzzles.values():
+        if isinstance(puzzle, LockPuzzle):
+            needed = [puzzle.key_item]
+        elif isinstance(puzzle, LeverPuzzle):
+            needed = list(puzzle.sequence)
+        elif isinstance(puzzle, CombinationPuzzle):
+            needed = list(puzzle.items)
+        else:
+            needed = []
+        for iid in needed:
+            assert iid in items, f"{dungeon_id}: missing item {iid}"
+            assert items[iid].type in ("key", "quest")
+            assert iid in room_items, f"{dungeon_id}: {iid} is not placed in a room"
+
+    for iid in room_items:
+        assert iid in items
+    for data in dungeon._monster_data.values():
+        for entry in data.get("loot", []):
+            assert entry["item"] in items

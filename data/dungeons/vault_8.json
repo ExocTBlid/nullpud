@@ -1,0 +1,93 @@
+{
+  "id": "vault_8",
+  "name": "The Sunken Vault",
+  "base_level": 8,
+  "entry_room": "stair",
+  "boss_room": "inner",
+  "rooms": {
+    "stair": {
+      "name": "Vault Stair",
+      "desc": "The stair sinks under green water up to your knees. The corridor is north.",
+      "exits": {
+        "north": "corridor"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": null
+    },
+    "corridor": {
+      "name": "Drowned Corridor",
+      "desc": "Mail rings click somewhere ahead. Doors stand to the east and west.",
+      "exits": {
+        "south": "stair",
+        "west": "seal_room",
+        "east": "ward_room",
+        "north": "door"
+      },
+      "items": [],
+      "monster": "vault_sentinel",
+      "puzzle": null
+    },
+    "seal_room": {
+      "name": "Seal Room",
+      "desc": "A round seal of green bronze sits in a dry box.",
+      "exits": {
+        "east": "corridor"
+      },
+      "items": [
+        "vault_seal"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "ward_room": {
+      "name": "Ward Room",
+      "desc": "A notched ward, a coat of plates, and a thick red vial wait on a table above the water.",
+      "exits": {
+        "west": "corridor"
+      },
+      "items": [
+        "vault_ward",
+        "plate_coat",
+        "greater_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "door": {
+      "name": "Twin Slots",
+      "desc": "The vault door has two empty slots, one round and one cut like a keyway.",
+      "exits": {
+        "south": "corridor",
+        "north": "inner"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "twin_slots"
+    },
+    "inner": {
+      "name": "The Inner Vault",
+      "desc": "The water stops at the threshold. The warden does not.",
+      "exits": {
+        "south": "door"
+      },
+      "items": [],
+      "monster": "vault_warden",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "twin_slots": {
+      "type": "combination",
+      "desc": "Two slots flank the vault door, one round, one cut like a ward.",
+      "items": [
+        "vault_seal",
+        "vault_ward"
+      ],
+      "consume": true,
+      "blocks_exit": "north",
+      "success_msg": "Both slots fill. The vault door sinks into the floor.",
+      "fail_msg": "That does not fit either slot."
+    }
+  }
+}

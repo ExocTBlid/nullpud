@@ -224,7 +224,13 @@ Items are global — any dungeon or monster can reference them by id.
 }
 ```
 
-Stats are scaled at runtime by `dungeon.py` using `player.level` and the dungeon's `base_level`. The formula is applied to `base_hp`, `base_attack`, and `base_defense` — the JSON always stores base values at level 1.
+Stats are scaled at runtime by `dungeon.py`:
+
+```text
+scaled = max(1, round(base * (player_level / base_level)))
+```
+
+Write `base_hp`, `base_attack`, and `base_defense` as the stats a player of this dungeon's `base_level` should face. At that level the scale factor is 1.
 
 ### Monster fields
 
@@ -233,9 +239,9 @@ Stats are scaled at runtime by `dungeon.py` using `player.level` and the dungeon
 | `id` | string | yes | Unique identifier. Must match the filename. |
 | `name` | string | yes | Display name. |
 | `desc` | string | yes | Printed when the player enters the room. |
-| `base_hp` | int | yes | HP at level 1. |
-| `base_attack` | int | yes | Attack at level 1. |
-| `base_defense` | int | yes | Defense at level 1. |
+| `base_hp` | int | yes | HP when the player is at this dungeon's `base_level`. |
+| `base_attack` | int | yes | Attack when the player is at this dungeon's `base_level`. |
+| `base_defense` | int | yes | Defense when the player is at this dungeon's `base_level`. |
 | `xp` | int | yes | XP awarded on defeat (unscaled). |
 | `loot` | array | no | Each entry: `item` (item id) and `chance` (0.0–1.0). Rolled independently on defeat. |
 

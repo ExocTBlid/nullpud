@@ -1,0 +1,9 @@
+{
+  "id": "steel_sword",
+  "name": "Steel Sword",
+  "desc": "A bright blade with a wire-wrapped grip. Adds 5 attack.",
+  "type": "weapon",
+  "stat_bonus": {
+    "attack": 5
+  }
+}

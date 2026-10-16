@@ -1,0 +1,20 @@
+{
+  "id": "vault_warden",
+  "name": "Vault Warden",
+  "desc": "The warden is a door that learned to hate the people who open it.",
+  "base_hp": 120,
+  "base_attack": 15,
+  "base_defense": 6,
+  "xp": 420,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The warden locks its own heart. The armor tightens.",
+    "attack_bonus": 3
+  }
+}

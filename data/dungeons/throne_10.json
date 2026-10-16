@@ -1,0 +1,86 @@
+{
+  "id": "throne_10",
+  "name": "The Night Throne",
+  "base_level": 10,
+  "entry_room": "gate",
+  "boss_room": "throne",
+  "rooms": {
+    "gate": {
+      "name": "Moon Gate",
+      "desc": "A silver gate stands under a dead moon painted on the stone. A key lies in the dust.",
+      "exits": {
+        "north": "court"
+      },
+      "items": [
+        "throne_key"
+      ],
+      "monster": null,
+      "puzzle": "moon_gate"
+    },
+    "court": {
+      "name": "The Court",
+      "desc": "The court is empty of courtiers. It is not empty of guards. The gallery is north.",
+      "exits": {
+        "south": "gate",
+        "north": "gallery"
+      },
+      "items": [],
+      "monster": "throne_guard",
+      "puzzle": null
+    },
+    "gallery": {
+      "name": "The Gallery",
+      "desc": "Portraits of kings with the faces scratched out. A mask on the north lintel waits.",
+      "exits": {
+        "south": "court",
+        "north": "dais"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "coffin_riddle"
+    },
+    "dais": {
+      "name": "The Dais",
+      "desc": "Three steps up. Two thick red vials sit on the last one, left for someone who would need them.",
+      "exits": {
+        "south": "gallery",
+        "north": "throne"
+      },
+      "items": [
+        "greater_potion",
+        "greater_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "throne": {
+      "name": "The Night Throne",
+      "desc": "The throne is black iron. The king has been waiting.",
+      "exits": {
+        "south": "dais"
+      },
+      "items": [],
+      "monster": "night_king",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "moon_gate": {
+      "type": "lock",
+      "desc": "The moon gate is locked.",
+      "key_item": "throne_key",
+      "blocks_exit": "north",
+      "success_msg": "The gate opens without a sound.",
+      "fail_msg": "Nothing you hold belongs to this lock."
+    },
+    "coffin_riddle": {
+      "type": "riddle",
+      "desc": "The mask asks: 'The one who makes it does not need it. The one who buys it does not use it. The one who uses it does not know it. What is it?'",
+      "answer": "coffin",
+      "blocks_exit": "north",
+      "success_msg": "The mask shuts its eyes. The way north is open.",
+      "fail_msg": "The mask does not blink.",
+      "hint": "One word. It is a house for someone who will not come home."
+    }
+  }
+}

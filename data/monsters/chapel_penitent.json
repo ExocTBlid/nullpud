@@ -1,0 +1,15 @@
+{
+  "id": "chapel_penitent",
+  "name": "Chapel Penitent",
+  "desc": "A hooded figure drags a chain and does not look up.",
+  "base_hp": 32,
+  "base_attack": 10,
+  "base_defense": 3,
+  "xp": 90,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 0.4
+    }
+  ]
+}

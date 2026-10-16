@@ -1,0 +1,9 @@
+{
+  "id": "nightblade",
+  "name": "Nightblade",
+  "desc": "A narrow sword that drinks the light. Adds 8 attack.",
+  "type": "weapon",
+  "stat_bonus": {
+    "attack": 8
+  }
+}

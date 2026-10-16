@@ -1,0 +1,19 @@
+{
+  "id": "barrow_wight",
+  "name": "Barrow Wight",
+  "desc": "Gold dust leaks from a burial mask as the wight stands.",
+  "base_hp": 22,
+  "base_attack": 6,
+  "base_defense": 1,
+  "xp": 50,
+  "loot": [
+    {
+      "item": "bone_shard",
+      "chance": 0.6
+    },
+    {
+      "item": "health_potion",
+      "chance": 0.4
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "blessed_mace",
+  "name": "Blessed Mace",
+  "desc": "A chapel mace with a cracked silver head. Adds 6 attack.",
+  "type": "weapon",
+  "stat_bonus": {
+    "attack": 6
+  }
+}

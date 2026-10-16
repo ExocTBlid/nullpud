@@ -1,0 +1,20 @@
+{
+  "id": "spire_lord",
+  "name": "Spire Lord",
+  "desc": "At the peak, a lord of cinders sits on a throne of chimney brick.",
+  "base_hp": 140,
+  "base_attack": 16,
+  "base_defense": 6,
+  "xp": 460,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The lord inhales the ash and burns white.",
+    "attack_bonus": 4
+  }
+}

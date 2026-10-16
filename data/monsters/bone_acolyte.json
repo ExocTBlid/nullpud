@@ -1,0 +1,19 @@
+{
+  "id": "bone_acolyte",
+  "name": "Bone Acolyte",
+  "desc": "A skeleton in a choir robe bows, then raises a femur like a club.",
+  "base_hp": 28,
+  "base_attack": 8,
+  "base_defense": 2,
+  "xp": 70,
+  "loot": [
+    {
+      "item": "bone_shard",
+      "chance": 0.7
+    },
+    {
+      "item": "health_potion",
+      "chance": 0.4
+    }
+  ]
+}

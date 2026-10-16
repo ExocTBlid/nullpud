@@ -8,7 +8,7 @@ Contexts
 --------
 None          — exploration (default)
 'combat'      — inside a fight; only attack / use potion / flee are valid
-'hub'         — between dungeons; enter / quit / stats are valid
+'hub'         — the tavern between dungeons; next / enter / quit / stats are valid
 
 adventurelib captures free words in UPPERCASE tokens.
   @when('go DIRECTION')   → direction kwarg
@@ -19,6 +19,7 @@ adventurelib captures free words in UPPERCASE tokens.
 
 from __future__ import annotations
 
+import json
 import sys
 from typing import Optional
 
@@ -30,7 +31,13 @@ from rich.table import Table
 from rich.text import Text
 
 from nullpud.combatant import Combatant
-from nullpud.dungeon import DUNGEON_ORDER, Dungeon, next_dungeon
+from nullpud.dungeon import (
+    DUNGEON_ORDER,
+    Dungeon,
+    dungeon_choices,
+    dungeon_info,
+    record_completion,
+)
 from nullpud.item import get_item, load_all_items
 from nullpud.player import Player
 from nullpud.puzzle import PuzzleOutcome
@@ -45,6 +52,10 @@ _player: Optional[Player] = None
 _dungeon: Optional[Dungeon] = None
 _current_room_id: Optional[str] = None
 _enemy: Optional[Combatant] = None   # active combat opponent
+
+
+def _at_tavern() -> bool:
+    return adventurelib.get_context() == "hub" or _dungeon is None
 
 
 def _room():
@@ -136,6 +147,9 @@ def cmd_look() -> None:
         console.print("[yellow]You're in the middle of a fight![/yellow]")
         _print_combat_status()
         return
+    if _at_tavern():
+        _show_hub()
+        return
     room = _room()
     room.render(load_all_items(), _puzzle())
     room.visited = True
@@ -147,6 +161,12 @@ def cmd_go(direction: str) -> None:
 
     if adventurelib.get_context() == "combat":
         console.print("[red]You can't flee like that — use [bold]flee[/bold].[/red]")
+        return
+    if _at_tavern():
+        console.print(
+            "[dim]The tavern has no passage that way. "
+            "The levels are on the board.[/dim]"
+        )
         return
 
     direction = direction.lower()
@@ -186,6 +206,9 @@ def cmd_take(item: str) -> None:
     if adventurelib.get_context() == "combat":
         console.print("[yellow]Finish the fight first.[/yellow]")
         return
+    if _at_tavern():
+        console.print("[dim]There's nothing like that in the tavern.[/dim]")
+        return
     room = _room()
     item_lower = item.lower()
     # Match by id or name fragment
@@ -208,6 +231,9 @@ def cmd_drop(item: str) -> None:
     assert _player
     if adventurelib.get_context() == "combat":
         console.print("[yellow]Finish the fight first.[/yellow]")
+        return
+    if _at_tavern():
+        console.print("[dim]You hold onto it. The tavern floor is no place for that.[/dim]")
         return
     item_lower = item.lower()
     matched_id = _find_item_in_list(item_lower, _player.inventory)
@@ -260,6 +286,10 @@ def cmd_use(item: str) -> None:
         console.print(f"[green]You equip the {item_obj.name}.[/green]")
         return
 
+    if _at_tavern():
+        console.print(f"[dim]You can't use the {item_obj.name} here.[/dim]")
+        return
+
     # Try applying to the current room's puzzle
     puzzle = _puzzle()
     if puzzle and not puzzle.solved:
@@ -275,6 +305,12 @@ def cmd_talk(npc: str) -> None:
     if adventurelib.get_context() == "combat":
         console.print("[yellow]This isn't the time for conversation.[/yellow]")
         return
+    if _at_tavern():
+        console.print(
+            '[cyan]The barkeep taps the board.[/cyan] '
+            '"Next level, or one you\'ve already walked."'
+        )
+        return
     puzzle = _puzzle()
     if puzzle and not puzzle.solved and puzzle.type == "riddle":
         console.print(f"[cyan]{puzzle.desc}[/cyan]")
@@ -285,6 +321,9 @@ def cmd_talk(npc: str) -> None:
 
 @adventurelib.when("say TEXT")
 def cmd_say(text: str) -> None:
+    if _at_tavern():
+        console.print("[dim]The tavern noise swallows your words.[/dim]")
+        return
     puzzle = _puzzle()
     if puzzle and not puzzle.solved and puzzle.type == "riddle":
         result = puzzle.attempt(player_answer=text)
@@ -316,6 +355,9 @@ def cmd_help() -> None:
         ("talk <npc>", "Speak to someone in the room"),
         ("inventory / i", "List your items"),
         ("stats", "Show your stats"),
+        ("next", "From the tavern, take the next level"),
+        ("enter <dungeon>", "From the tavern, take the next level or a previous dungeon"),
+        ("return / hub", "Leave the dungeon and go back to the tavern"),
         ("attack", "Strike in combat"),
         ("flee", "Attempt to escape a fight"),
         ("quit", "Save and exit"),
@@ -526,26 +568,20 @@ def _end_combat(victory: bool) -> None:
 def _on_dungeon_complete() -> None:
     global _enemy
     assert _player and _dungeon
-    adventurelib.set_context(None)
     _enemy = None
 
+    name = _dungeon.name
     console.print()
     console.print(Panel(
-        f"[bold yellow]★ {_dungeon.name} complete![/bold yellow]\n\nYou fought your way through every shadow.",
+        f"[bold yellow]★ {name} complete![/bold yellow]\n\nYou fought your way through every shadow.",
         border_style="yellow",
     ))
 
-    _player.last_dungeon = _dungeon.id
+    _player.last_dungeon = record_completion(_player.last_dungeon, _dungeon.id)
     path = _player.save()
     console.print(f"[dim]Progress saved to {path}.[/dim]")
-
-    nxt = next_dungeon(_dungeon.id)
-    if nxt:
-        console.print(f"\n[cyan]The next dungeon awaits: [bold]{nxt}[/bold][/cyan]")
-    else:
-        console.print("\n[bold green]You have conquered all dungeons. The realm is safe... for now.[/bold green]")
-
-    console.print("\n[dim]Type [bold]quit[/bold] to exit, or explore the cleared dungeon.[/dim]")
+    console.print("[dim]You climb the stairs back to the tavern.[/dim]")
+    _enter_hub()
 
 
 # ---------------------------------------------------------------------------
@@ -613,77 +649,154 @@ def _find_item_in_list(query: str, item_ids: list[str]) -> Optional[str]:
 # Hub
 # ---------------------------------------------------------------------------
 
+def _enter_hub() -> None:
+    """Leave any dungeon and stand in the tavern."""
+    global _dungeon, _current_room_id, _enemy
+    _dungeon = None
+    _current_room_id = None
+    _enemy = None
+    adventurelib.set_context("hub")
+    _show_hub()
+
+
 def _show_hub() -> None:
     assert _player
-    items = load_all_items()
+    choice = dungeon_choices(_player.last_dungeon)
     console.print()
     console.print(Panel(
         Text.assemble(
-            ("The Wayward Lantern\n\n", "bold"),
-            ("A dim tavern at the edge of nowhere. The barkeep nods.\n\n", ""),
-            (f"Welcome back, {_player.name}.\n", "italic"),
+            ("Rain ticks the shutters of a low-beamed tavern. ", ""),
+            ("The fire is low. The barkeep nods at a chalk board behind the bar, ", ""),
+            ("where every level is written.\n\n", ""),
+            (f"Welcome back, {_player.name}.", "italic"),
         ),
-        title="[bold]Hub[/bold]",
-        border_style="dim",
+        title="[bold]The Wayward Lantern[/bold]",
+        border_style="yellow",
     ))
     _print_stats()
     console.print()
 
-    available = _available_dungeons()
-    if available:
-        console.print("[cyan]Available dungeons:[/cyan]")
-        for did in available:
-            console.print(f"  • [bold]{did}[/bold]")
-        console.print()
-        console.print("[dim]Type [bold]enter <dungeon>[/bold] to descend.[/dim]")
+    table = Table(title="The Board", show_header=True, header_style="bold cyan")
+    table.add_column("#", justify="right", style="dim")
+    table.add_column("Level", style="white")
+    table.add_column("Id", style="bold")
+    table.add_column("Status")
+    for number, did in enumerate(DUNGEON_ORDER, start=1):
+        try:
+            title, _level = dungeon_info(did)
+        except (OSError, KeyError, json.JSONDecodeError):
+            title = did
+        if did == choice.next_id:
+            status = "[bold cyan]next level[/bold cyan]"
+        elif did in choice.previous:
+            status = "[green]cleared[/green]"
+        else:
+            status = "[dim]shut[/dim]"
+        table.add_row(str(number), title, did, status)
+    console.print(table)
+    console.print()
+
+    if choice.next_id:
+        try:
+            title, _level = dungeon_info(choice.next_id)
+        except (OSError, KeyError, json.JSONDecodeError):
+            title = choice.next_id
+        console.print(f"[cyan]Next level:[/cyan] [bold]{title}[/bold]. Type [bold]next[/bold].")
     else:
-        console.print("[green]All dungeons cleared![/green]")
-
-    console.print("[dim]Type [bold]stats[/bold], [bold]inventory[/bold], or [bold]quit[/bold].[/dim]")
-
-
-def _available_dungeons() -> list[str]:
-    assert _player
-    result = []
-    for did in DUNGEON_ORDER:
-        if _player.last_dungeon is None or DUNGEON_ORDER.index(did) > DUNGEON_ORDER.index(_player.last_dungeon):
-            result.append(did)
-        elif did == DUNGEON_ORDER[0] and _player.last_dungeon is None:
-            result.append(did)
-    # Always include the first dungeon if nothing has been completed
-    if not result and _player.last_dungeon is None:
-        result = [DUNGEON_ORDER[0]]
-    return result
+        console.print("[bold green]Every level is cleared. The realm is quiet.[/bold green]")
+    if choice.previous:
+        console.print("[dim]To walk a previous dungeon, type [bold]enter <id>[/bold].[/dim]")
+    console.print("[dim]look, stats, inventory, help, quit[/dim]")
 
 
-@adventurelib.when("enter DUNGEON")
-def cmd_enter(dungeon: str) -> None:
+def _tavern_only() -> bool:
+    """True when a level-picking command may run."""
+    if adventurelib.get_context() == "combat":
+        console.print("[yellow]Finish the fight first.[/yellow]")
+        return False
+    if not _at_tavern():
+        console.print("[dim]The board is in the tavern. Type [bold]return[/bold].[/dim]")
+        return False
+    return True
+
+
+def _begin_dungeon(dungeon_id: str) -> None:
     global _dungeon, _current_room_id, _enemy
     assert _player
-
-    dungeon_id = dungeon.lower()
-    if dungeon_id not in DUNGEON_ORDER:
-        console.print(f"[dim]Unknown dungeon: {dungeon_id}[/dim]")
-        return
-
-    console.print(f"[dim]Loading {dungeon_id}...[/dim]")
     try:
-        _dungeon = Dungeon.load(dungeon_id)
+        dungeon = Dungeon.load(dungeon_id)
     except FileNotFoundError as e:
         console.print(f"[red]Error: {e}[/red]")
         return
 
-    _current_room_id = _dungeon.entry_room_id
+    _dungeon = dungeon
+    _current_room_id = dungeon.entry_room_id
     _enemy = None
     adventurelib.set_context(None)
 
     console.print()
     console.print(Panel(
-        f"[bold]Entering: {_dungeon.name}[/bold]",
+        f"[bold]{dungeon.name}[/bold]",
+        title="Descending",
         border_style="cyan",
     ))
     load_all_items()
     _room().render(load_all_items(), _puzzle())
+    console.print("[dim]Type [bold]return[/bold] to climb back to the tavern.[/dim]")
+
+
+def _enter_next() -> None:
+    assert _player
+    choice = dungeon_choices(_player.last_dungeon)
+    if choice.next_id is None:
+        console.print(
+            "[dim]There is no next level. "
+            "Enter a previous dungeon if you want to walk it again.[/dim]"
+        )
+        return
+    _begin_dungeon(choice.next_id)
+
+
+@adventurelib.when("next")
+@adventurelib.when("next level")
+def cmd_next() -> None:
+    if not _tavern_only():
+        return
+    _enter_next()
+
+
+@adventurelib.when("return")
+@adventurelib.when("hub")
+def cmd_return() -> None:
+    if adventurelib.get_context() == "combat":
+        console.print("[red]You can't leave in the middle of a fight.[/red]")
+        return
+    if _at_tavern():
+        _show_hub()
+        return
+    console.print("[dim]You climb back to the tavern. The dungeon resets behind you.[/dim]")
+    _enter_hub()
+
+
+@adventurelib.when("enter DUNGEON")
+def cmd_enter(dungeon: str) -> None:
+    if not _tavern_only():
+        return
+    assert _player
+
+    dungeon_id = dungeon.lower()
+    if dungeon_id == "next":
+        _enter_next()
+        return
+
+    choice = dungeon_choices(_player.last_dungeon)
+    if dungeon_id not in DUNGEON_ORDER:
+        console.print(f"[dim]The board has no '{dungeon_id}'.[/dim]")
+        return
+    if dungeon_id not in choice.allowed():
+        console.print("[dim]That level is still shut. Take the next one first.[/dim]")
+        return
+    _begin_dungeon(dungeon_id)
 
 
 # ---------------------------------------------------------------------------
@@ -733,5 +846,5 @@ def run() -> None:
     else:
         _player = _new_player_prompt()
 
-    _show_hub()
+    _enter_hub()
     adventurelib.start()

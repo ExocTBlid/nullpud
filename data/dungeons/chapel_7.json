@@ -1,0 +1,77 @@
+{
+  "id": "chapel_7",
+  "name": "The Black Chapel",
+  "base_level": 7,
+  "entry_room": "porch",
+  "boss_room": "sanctum",
+  "rooms": {
+    "porch": {
+      "name": "Chapel Porch",
+      "desc": "The chapel door is shut. A verse is cut into the wood.",
+      "exits": {
+        "north": "aisle"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "echo_riddle"
+    },
+    "aisle": {
+      "name": "The Aisle",
+      "desc": "Black candles burn without warming anything. A vestry door is east.",
+      "exits": {
+        "south": "porch",
+        "east": "vestry",
+        "north": "altar"
+      },
+      "items": [],
+      "monster": "chapel_penitent",
+      "puzzle": null
+    },
+    "vestry": {
+      "name": "Vestry",
+      "desc": "Robes rot on their hooks. A thick red vial stands on the vestment chest.",
+      "exits": {
+        "west": "aisle"
+      },
+      "items": [
+        "greater_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "altar": {
+      "name": "The Altar",
+      "desc": "The altar cloth is ash. A silver mace lies where the book should be.",
+      "exits": {
+        "south": "aisle",
+        "north": "sanctum"
+      },
+      "items": [
+        "blessed_mace"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "sanctum": {
+      "name": "Sanctum",
+      "desc": "The sanctum has no windows. The priest is already facing you.",
+      "exits": {
+        "south": "altar"
+      },
+      "items": [],
+      "monster": "black_priest",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "echo_riddle": {
+      "type": "riddle",
+      "desc": "The door asks: 'I speak without a mouth and hear without ears. I have no body, but I come alive with the wind. What am I?'",
+      "answer": "echo",
+      "blocks_exit": "north",
+      "success_msg": "Your answer comes back, and the door opens.",
+      "fail_msg": "The door does not answer.",
+      "hint": "One word. Shout in a stone room and listen."
+    }
+  }
+}

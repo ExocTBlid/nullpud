@@ -1,0 +1,15 @@
+{
+  "id": "throne_guard",
+  "name": "Throne Guard",
+  "desc": "A knight in moon-silver plate bars the gallery.",
+  "base_hp": 44,
+  "base_attack": 13,
+  "base_defense": 4,
+  "xp": 120,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 0.6
+    }
+  ]
+}

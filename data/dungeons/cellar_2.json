@@ -1,0 +1,94 @@
+{
+  "id": "cellar_2",
+  "name": "The Flooded Cellar",
+  "base_level": 2,
+  "entry_room": "landing",
+  "boss_room": "sump",
+  "rooms": {
+    "landing": {
+      "name": "Cellar Landing",
+      "desc": "Stone steps end in black water. A grate to the north is padlocked.",
+      "exits": {
+        "north": "pump_room"
+      },
+      "items": [
+        "cellar_key"
+      ],
+      "monster": null,
+      "puzzle": "grate_lock"
+    },
+    "pump_room": {
+      "name": "Pump Room",
+      "desc": "Pumps cough in the dark. A valve handle lies in the silt. Passages run east and north.",
+      "exits": {
+        "south": "landing",
+        "east": "stores",
+        "north": "valves"
+      },
+      "items": [
+        "valve_rust"
+      ],
+      "monster": "drowned_man",
+      "puzzle": null
+    },
+    "stores": {
+      "name": "Salt Stores",
+      "desc": "Sacks of wet salt slump against the wall. Two valve handles gleam on a crate.",
+      "exits": {
+        "west": "pump_room"
+      },
+      "items": [
+        "valve_brass",
+        "valve_tin",
+        "leather_vest",
+        "health_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "valves": {
+      "name": "Valve Gallery",
+      "desc": "Three empty sockets sit above a sealed hatch.",
+      "exits": {
+        "south": "pump_room",
+        "north": "sump"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "valve_order"
+    },
+    "sump": {
+      "name": "The Sump",
+      "desc": "The cellar ends in a sump. Something hangs from the ladder.",
+      "exits": {
+        "south": "valves"
+      },
+      "items": [],
+      "monster": "cellar_hag",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "grate_lock": {
+      "type": "lock",
+      "desc": "The grate is shut with a heavy padlock.",
+      "key_item": "cellar_key",
+      "blocks_exit": "north",
+      "success_msg": "The padlock snaps. The grate swings up.",
+      "fail_msg": "You have nothing that fits this lock."
+    },
+    "valve_order": {
+      "type": "lever",
+      "desc": "Three sockets wait for handles. A scratch on the pipe reads: rust, then brass, then tin.",
+      "sequence": [
+        "valve_rust",
+        "valve_brass",
+        "valve_tin"
+      ],
+      "blocks_exit": "north",
+      "success_msg": "The handles seat and turn. The hatch unseals.",
+      "fail_msg": "The pipes groan and spit the handles back. The order resets.",
+      "hint": "Scratched into the pipe: rust, then brass, then tin."
+    }
+  }
+}

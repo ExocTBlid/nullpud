@@ -1,0 +1,9 @@
+{
+  "id": "leather_vest",
+  "name": "Leather Vest",
+  "desc": "Boiled leather stitched with tarred thread. Adds 1 defense.",
+  "type": "armor",
+  "stat_bonus": {
+    "defense": 1
+  }
+}

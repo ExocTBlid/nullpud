@@ -1,0 +1,93 @@
+{
+  "id": "sewer_4",
+  "name": "The Drowned Warren",
+  "base_level": 4,
+  "entry_room": "outfall",
+  "boss_room": "nest",
+  "rooms": {
+    "outfall": {
+      "name": "Outfall",
+      "desc": "Daylight dies behind you. The sewer runs north into the dark.",
+      "exits": {
+        "north": "junction"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": null
+    },
+    "junction": {
+      "name": "The Junction",
+      "desc": "Four tunnels meet in a pool of slurry. Side passages go east and west.",
+      "exits": {
+        "south": "outfall",
+        "west": "gear_nook",
+        "east": "cog_nook",
+        "north": "wheel"
+      },
+      "items": [],
+      "monster": "muck_lurker",
+      "puzzle": null
+    },
+    "gear_nook": {
+      "name": "Gear Nook",
+      "desc": "A toothed gear sits on a dry ledge, just out of the muck.",
+      "exits": {
+        "east": "junction"
+      },
+      "items": [
+        "sewer_gear"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "cog_nook": {
+      "name": "Cog Nook",
+      "desc": "A round cog, a shirt of rings, and a red vial share a niche.",
+      "exits": {
+        "west": "junction"
+      },
+      "items": [
+        "sewer_cog",
+        "chain_shirt",
+        "health_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "wheel": {
+      "name": "Wheel Door",
+      "desc": "An iron wheel door fills the north tunnel. Two pegs on it are empty.",
+      "exits": {
+        "south": "junction",
+        "north": "nest"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "wheel_door"
+    },
+    "nest": {
+      "name": "The Nest",
+      "desc": "The tunnel opens into a nest of brick and bone.",
+      "exits": {
+        "south": "wheel"
+      },
+      "items": [],
+      "monster": "warren_queen",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "wheel_door": {
+      "type": "combination",
+      "desc": "The wheel door waits on two empty pegs, one round and one toothed.",
+      "items": [
+        "sewer_gear",
+        "sewer_cog"
+      ],
+      "consume": true,
+      "blocks_exit": "north",
+      "success_msg": "Both pegs fill. The wheel turns and the door rolls aside.",
+      "fail_msg": "That does not fit either peg."
+    }
+  }
+}

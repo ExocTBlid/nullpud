@@ -1,0 +1,9 @@
+{
+  "id": "scale_mail",
+  "name": "Scale Mail",
+  "desc": "Overlapping iron scales, warm to the touch. Adds 3 defense.",
+  "type": "armor",
+  "stat_bonus": {
+    "defense": 3
+  }
+}

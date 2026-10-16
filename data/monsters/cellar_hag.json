@@ -1,0 +1,20 @@
+{
+  "id": "cellar_hag",
+  "name": "Cellar Hag",
+  "desc": "She hangs from the sump ladder, hair dripping, nails long as keys.",
+  "base_hp": 50,
+  "base_attack": 8,
+  "base_defense": 3,
+  "xp": 180,
+  "loot": [
+    {
+      "item": "health_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The hag's jaw unhinges. The sump water boils.",
+    "attack_bonus": 2
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "night_king",
+  "name": "Night King",
+  "desc": "The king on the throne has been dead long enough to be patient.",
+  "base_hp": 180,
+  "base_attack": 18,
+  "base_defense": 7,
+  "xp": 500,
+  "loot": [
+    {
+      "item": "night_crown",
+      "chance": 1.0
+    },
+    {
+      "item": "greater_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The king remembers being alive. It is worse.",
+    "attack_bonus": 4
+  }
+}

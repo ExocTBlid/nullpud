@@ -1,0 +1,15 @@
+{
+  "id": "vault_sentinel",
+  "name": "Vault Sentinel",
+  "desc": "A drowned suit of armor walks the corridor on its own.",
+  "base_hp": 36,
+  "base_attack": 11,
+  "base_defense": 3,
+  "xp": 100,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 0.5
+    }
+  ]
+}

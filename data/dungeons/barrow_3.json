@@ -1,0 +1,65 @@
+{
+  "id": "barrow_3",
+  "name": "The Barrow Road",
+  "base_level": 3,
+  "entry_room": "mouth",
+  "boss_room": "tomb",
+  "rooms": {
+    "mouth": {
+      "name": "Barrow Mouth",
+      "desc": "A turf mound opens on a stone throat. A standing stone blocks the way north.",
+      "exits": {
+        "north": "passage"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "barrow_riddle"
+    },
+    "passage": {
+      "name": "Low Passage",
+      "desc": "You have to stoop. Grave goods crunch underfoot. The passage runs north.",
+      "exits": {
+        "south": "mouth",
+        "north": "cairn"
+      },
+      "items": [],
+      "monster": "barrow_wight",
+      "puzzle": null
+    },
+    "cairn": {
+      "name": "The Cairn",
+      "desc": "Stacked stones circle a bronze axe and a stoppered vial.",
+      "exits": {
+        "south": "passage",
+        "north": "tomb"
+      },
+      "items": [
+        "bronze_axe",
+        "health_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "tomb": {
+      "name": "King's Tomb",
+      "desc": "A stone bed holds a king who has not agreed to stay there.",
+      "exits": {
+        "south": "cairn"
+      },
+      "items": [],
+      "monster": "barrow_king",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "barrow_riddle": {
+      "type": "riddle",
+      "desc": "The standing stone asks: 'The more of me you take, the more you leave behind. What am I?'",
+      "answer": "footsteps",
+      "blocks_exit": "north",
+      "success_msg": "The stone sinks. The passage north is open.",
+      "fail_msg": "The stone is silent.",
+      "hint": "One word. Look back at the road you walked."
+    }
+  }
+}

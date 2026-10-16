@@ -1,0 +1,9 @@
+{
+  "id": "chain_shirt",
+  "name": "Chain Shirt",
+  "desc": "A shirt of riveted rings, short in the sleeves. Adds 2 defense.",
+  "type": "armor",
+  "stat_bonus": {
+    "defense": 2
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "id": "mine_6",
+  "name": "The Cinder Mines",
+  "base_level": 6,
+  "entry_room": "adit",
+  "boss_room": "forge",
+  "rooms": {
+    "adit": {
+      "name": "Mine Adit",
+      "desc": "A timbered tunnel slopes north. A horn of black powder hangs on a peg.",
+      "exits": {
+        "north": "shaft"
+      },
+      "items": [
+        "black_powder"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "shaft": {
+      "name": "The Shaft",
+      "desc": "The lift cage is a wreck. Heat rolls from the north. A side cut runs east.",
+      "exits": {
+        "south": "adit",
+        "east": "locker",
+        "north": "furnace"
+      },
+      "items": [],
+      "monster": "cinder_imp",
+      "puzzle": null
+    },
+    "locker": {
+      "name": "Tool Locker",
+      "desc": "Powder horns, a coat of scales, and a thick red vial sit on a bench.",
+      "exits": {
+        "west": "shaft"
+      },
+      "items": [
+        "grey_powder",
+        "white_powder",
+        "scale_mail",
+        "greater_potion"
+      ],
+      "monster": null,
+      "puzzle": null
+    },
+    "furnace": {
+      "name": "The Furnace",
+      "desc": "A cold furnace blocks the north drift. Three cups wait in a row.",
+      "exits": {
+        "south": "shaft",
+        "north": "forge"
+      },
+      "items": [],
+      "monster": null,
+      "puzzle": "powder_order"
+    },
+    "forge": {
+      "name": "The Forge",
+      "desc": "The forge is the size of a chapel, and it is not empty.",
+      "exits": {
+        "south": "furnace"
+      },
+      "items": [],
+      "monster": "forge_titan",
+      "puzzle": null
+    }
+  },
+  "puzzles": {
+    "powder_order": {
+      "type": "lever",
+      "desc": "Three cups on the furnace. A soot-stained note says: black, then grey, then white.",
+      "sequence": [
+        "black_powder",
+        "grey_powder",
+        "white_powder"
+      ],
+      "blocks_exit": "north",
+      "success_msg": "The furnace coughs awake. The drift north is open.",
+      "fail_msg": "The powder flares wrong and dies. The cups are empty again.",
+      "hint": "A soot-stained note: black, then grey, then white."
+    }
+  }
+}

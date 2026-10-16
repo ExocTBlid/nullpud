@@ -1,0 +1,15 @@
+{
+  "id": "ash_wraith",
+  "name": "Ash Wraith",
+  "desc": "A column of ash keeps the shape of a man until it doesn't.",
+  "base_hp": 40,
+  "base_attack": 12,
+  "base_defense": 3,
+  "xp": 110,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 0.5
+    }
+  ]
+}

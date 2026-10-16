@@ -1,0 +1,20 @@
+{
+  "id": "forge_titan",
+  "name": "Forge Titan",
+  "desc": "The forge stands up. It has a chest of coals and arms of tongs.",
+  "base_hp": 100,
+  "base_attack": 13,
+  "base_defense": 5,
+  "xp": 340,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The titan's chest opens on a bed of coals.",
+    "attack_bonus": 3
+  }
+}

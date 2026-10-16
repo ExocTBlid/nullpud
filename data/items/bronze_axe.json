@@ -1,0 +1,9 @@
+{
+  "id": "bronze_axe",
+  "name": "Bronze Axe",
+  "desc": "A heavy axe with a notched bronze head. Adds 4 attack.",
+  "type": "weapon",
+  "stat_bonus": {
+    "attack": 4
+  }
+}

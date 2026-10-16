@@ -1,0 +1,9 @@
+{
+  "id": "plate_coat",
+  "name": "Plate Coat",
+  "desc": "A coat of black plates over mail. Adds 4 defense.",
+  "type": "armor",
+  "stat_bonus": {
+    "defense": 4
+  }
+}

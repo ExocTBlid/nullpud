@@ -1,0 +1,20 @@
+{
+  "id": "black_priest",
+  "name": "Black Priest",
+  "desc": "The priest at the altar has no face under the mitre.",
+  "base_hp": 110,
+  "base_attack": 14,
+  "base_defense": 5,
+  "xp": 380,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The priest sheds the last prayer. The chapel goes dark.",
+    "attack_bonus": 3
+  }
+}

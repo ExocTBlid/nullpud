@@ -1,0 +1,20 @@
+{
+  "id": "warren_queen",
+  "name": "Warren Queen",
+  "desc": "A pale bulk fills the nest, crowned in broken brick.",
+  "base_hp": 80,
+  "base_attack": 11,
+  "base_defense": 4,
+  "xp": 260,
+  "loot": [
+    {
+      "item": "health_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The queen shrieks. The warren answers.",
+    "attack_bonus": 3
+  }
+}

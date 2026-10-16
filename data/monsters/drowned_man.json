@@ -1,0 +1,19 @@
+{
+  "id": "drowned_man",
+  "name": "Drowned Man",
+  "desc": "A swollen corpse in a sailor's coat lurches out of the water.",
+  "base_hp": 18,
+  "base_attack": 5,
+  "base_defense": 1,
+  "xp": 40,
+  "loot": [
+    {
+      "item": "bone_shard",
+      "chance": 0.5
+    },
+    {
+      "item": "health_potion",
+      "chance": 0.4
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "cinder_imp",
+  "name": "Cinder Imp",
+  "desc": "A knot of sparks with arms skitters along the rail.",
+  "base_hp": 30,
+  "base_attack": 9,
+  "base_defense": 2,
+  "xp": 80,
+  "loot": [
+    {
+      "item": "greater_potion",
+      "chance": 0.4
+    }
+  ]
+}

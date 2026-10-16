@@ -1,0 +1,20 @@
+{
+  "id": "barrow_king",
+  "name": "Barrow King",
+  "desc": "A king in rotted mail sits up on his stone bed.",
+  "base_hp": 70,
+  "base_attack": 9,
+  "base_defense": 3,
+  "xp": 220,
+  "loot": [
+    {
+      "item": "health_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The king stands. Gold dust pours from the crown.",
+    "attack_bonus": 3
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "ossuary_saint",
+  "name": "Ossuary Saint",
+  "desc": "A saint of wired bones kneels in a halo of finger-rings.",
+  "base_hp": 90,
+  "base_attack": 12,
+  "base_defense": 4,
+  "xp": 300,
+  "loot": [
+    {
+      "item": "health_potion",
+      "chance": 1.0
+    }
+  ],
+  "boss_phase": {
+    "trigger_hp_pct": 0.5,
+    "message": "The saint's halo cracks. Bone dust fills the cell.",
+    "attack_bonus": 3
+  }
+}

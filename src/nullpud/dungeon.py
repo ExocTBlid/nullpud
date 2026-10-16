@@ -32,8 +32,37 @@ from nullpud.room import Room
 DUNGEON_DIR = Path(__file__).parent.parent.parent / "data" / "dungeons"
 MONSTER_DIR = Path(__file__).parent.parent.parent / "data" / "monsters"
 
-# Ids of available dungeons in progression order (add new ones here)
-DUNGEON_ORDER: list[str] = ["crypt_1"]
+# Ids of available dungeons in progression order (add new ones here).
+# The tavern offers the next id after the furthest clear, plus every earlier one.
+DUNGEON_ORDER: list[str] = [
+    "crypt_1",
+    "cellar_2",
+    "barrow_3",
+    "sewer_4",
+    "ossuary_5",
+    "mine_6",
+    "chapel_7",
+    "vault_8",
+    "spire_9",
+    "throne_10",
+]
+
+
+@dataclass(frozen=True)
+class DungeonChoice:
+    """Levels the tavern can offer.
+
+    previous: cleared dungeons, earliest first.
+    next_id: the next level, or None when every dungeon is cleared.
+    """
+
+    previous: tuple[str, ...]
+    next_id: Optional[str]
+
+    def allowed(self) -> tuple[str, ...]:
+        if self.next_id is None or self.next_id in self.previous:
+            return self.previous
+        return self.previous + (self.next_id,)
 
 
 @dataclass
@@ -148,3 +177,42 @@ def next_dungeon(current_id: str) -> Optional[str]:
         return DUNGEON_ORDER[idx + 1]
     except (ValueError, IndexError):
         return None
+
+
+def dungeon_info(dungeon_id: str) -> tuple[str, int]:
+    """Return (display name, base level) for a dungeon id."""
+    path = DUNGEON_DIR / f"{dungeon_id}.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Dungeon data not found: {path}")
+    with path.open() as f:
+        data = json.load(f)
+    return data["name"], int(data["base_level"])
+
+
+def dungeon_choices(last_completed: Optional[str]) -> DungeonChoice:
+    """Levels open from the tavern given the furthest dungeon cleared.
+
+    An unknown or missing last clear offers only the first dungeon.
+    """
+    if not DUNGEON_ORDER:
+        return DungeonChoice((), None)
+    if last_completed not in DUNGEON_ORDER:
+        return DungeonChoice((), DUNGEON_ORDER[0])
+    idx = DUNGEON_ORDER.index(last_completed)
+    previous = tuple(DUNGEON_ORDER[: idx + 1])
+    nxt = DUNGEON_ORDER[idx + 1] if idx + 1 < len(DUNGEON_ORDER) else None
+    return DungeonChoice(previous, nxt)
+
+
+def record_completion(last_completed: Optional[str], completed_id: str) -> Optional[str]:
+    """Furthest cleared id after beating completed_id.
+
+    Replaying an earlier dungeon does not rewind progress.
+    """
+    if completed_id not in DUNGEON_ORDER:
+        return last_completed
+    if last_completed not in DUNGEON_ORDER:
+        return completed_id
+    if DUNGEON_ORDER.index(completed_id) > DUNGEON_ORDER.index(last_completed):
+        return completed_id
+    return last_completed

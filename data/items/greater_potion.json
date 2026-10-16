@@ -1,0 +1,9 @@
+{
+  "id": "greater_potion",
+  "name": "Greater Health Potion",
+  "desc": "A thick red draught. Restores 25 HP.",
+  "type": "consumable",
+  "effect": {
+    "heal": 25
+  }
+}
